@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@200..900&display=swap');
+body{
+    font-family: "Chiron GoRound TC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: rgb(248, 255, 143);
+}
+form{
+    font-size: 3em;
+    margin: 50px;
+}
+label{
+    padding-top: 1%;
+}
+input.inputID{
+    border-color: rgb(124, 128, 70);
+    transition: 500ms;
+    width: 100px;
+    font-size: 1em;
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(255, 150, 101, 0.5);
+}
+input.inputID:hover{
+    transition: 400ms;
+    width: 280px;
+    font-size: 1em;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(255, 81, 0, 1);
+}
+
