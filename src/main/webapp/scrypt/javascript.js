@@ -1,3 +1,4 @@
+
 var table = document.getElementById('table');
 let tr = document.createElement('tr');
 let thName = document.createElement('th');
