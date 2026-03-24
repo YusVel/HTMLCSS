@@ -4,8 +4,7 @@
  */
 package schedule.employee;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.*;
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.JComboBox;

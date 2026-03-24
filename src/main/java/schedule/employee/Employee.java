@@ -1,8 +1,7 @@
 
 package schedule.employee;
 import Table.Designations;
-import javax.swing.*;
-import java.awt.event.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -119,22 +118,37 @@ public class Employee extends Human implements Comparable<Employee>, Serializabl
     }
     @Override
     public int compareTo(Employee other) {
-        if(this.post.equals(other.post))//если должности одинаковые
+        if(this.cabinetNumber!=13) // именно сотрудники из 13 кб должны быть первые в графике
         {
-            if(this.department.equals(other.department))//если отделения одинаковые
+            if(other.cabinetNumber==13)
+            {return -1;}
+            if(this.post.equals(other.post))//если должности одинаковые
             {
-                if(this.cabinetNumber.equals(other.cabinetNumber))
+                if(this.department.equals(other.department))//если отделения одинаковые
                 {
-                    return this.surname.compareTo(other.surname);
+                    if(this.cabinetNumber.equals(other.cabinetNumber))
+                    {
+                        return this.surname.compareTo(other.surname);
+                    }
+                    return this.cabinetNumber - other.cabinetNumber;
                 }
-                return this.cabinetNumber - other.cabinetNumber;
+                return this.department-other.department;
             }
-            return this.department-other.department;
-        }
-        else
-        {
             return this.post-other.post;
         }
+        return -1;
+    }
+    static public Employee isEmployeeInArray(String ID, ArrayList<Employee> employees)
+    {
+        if(employees==null){return null;}
+        for (Employee emp:employees)
+        {
+            if(String.valueOf(emp.getID()).equals(ID))
+            {
+                return emp;
+            }
+        }
+        return null;
     }
     static private String fileName = "treeEmployees.emp";// короткое имя файла с сотрудниками 
     public static final String[] POSTS = new String[]
@@ -337,6 +351,7 @@ public class Employee extends Human implements Comparable<Employee>, Serializabl
         hash = 97 * hash + Objects.hashCode(this.endEmployment);
         return hash;
     }
+
 }
 
 

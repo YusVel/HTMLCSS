@@ -28,6 +28,7 @@ import java.io.File;
 
 import static java.lang.System.out;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import javax.swing.event.ChangeEvent;
@@ -669,5 +670,6 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         Thread one = new Thread(()->{new Schedule();});
         one.start();
         System.out.println(one.getName());
+
     }
 }

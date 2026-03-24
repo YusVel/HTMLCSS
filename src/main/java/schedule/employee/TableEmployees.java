@@ -55,7 +55,6 @@ public class TableEmployees extends JTable {
             this.getColumnModel().getColumn(7).setPreferredWidth(2);//кабинет
             this.setFont(new Font("Verdena", Font.PLAIN, 12));
         }
-
         this.setBackground(new Color(252, 252, 217));
         this.setRowHeight(25);
         this.setGridColor(new Color(212, 210, 210));

@@ -56,7 +56,7 @@ public class EmployeeTableModel extends AbstractTableModel{
         if (mode == SELECTABLE) {
             return 8;
         }
-        return 7;
+        return 8;
     }
 
     @Override
@@ -77,8 +77,7 @@ public class EmployeeTableModel extends AbstractTableModel{
                 ret = mode == EDITABLE ? (Byte) employees.get(rowIndex).getDepartment() : Employee.DEPARTMENTS[employees.get(rowIndex).getDepartment()];
             case 6 ->
                 ret = mode == EDITABLE ? (Byte) employees.get(rowIndex).getCabineNumber() : Employee.CABINET_NUMBER[employees.get(rowIndex).getCabineNumber() - 1];
-            case 7 ->
-                ret = arrayBooleans.get(rowIndex);
+            case 7 -> ret = mode==SELECTABLE? arrayBooleans.get(rowIndex):employees.get(rowIndex).getID();
         }
         return ret;
     }
@@ -102,7 +101,7 @@ public class EmployeeTableModel extends AbstractTableModel{
             case 6 ->
                 ret = "№ КАБИНЕТА";
             case 7 ->
-                ret = "";
+                ret = mode==EDITABLE?"ID":"";
         }
         return ret;
     }
@@ -126,7 +125,7 @@ public class EmployeeTableModel extends AbstractTableModel{
             case 6 ->
                 ret = mode == EDITABLE ? JComboBox.class : String.class;
             case 7 ->
-                ret = Boolean.class;
+                ret = mode==SELECTABLE? Boolean.class: String.class;
         }
         return ret;
     }
@@ -136,7 +135,10 @@ public class EmployeeTableModel extends AbstractTableModel{
         boolean ret = false;
         switch (mode) {
             case EDITABLE:
-                ret = true;
+                if(columnIndex!=7)
+                {
+                    ret = true;
+                }
                 break;
             case SELECTABLE:
                 if (columnIndex == 7) {
