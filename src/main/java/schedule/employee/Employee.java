@@ -22,6 +22,7 @@ class Human implements Serializable
     protected String name;
     protected String patronomic;
     protected Calendar bithDay;
+    protected ArrayList<String> contacts = new ArrayList<>();
     Human(String surname,String name,String patronomic,Calendar bithDay)
     {
         this.surname = surname;
@@ -35,6 +36,16 @@ class Human implements Serializable
         this.name = new String(another.name);
         this.patronomic = new String(another.patronomic);
         this.bithDay = (Calendar)another.bithDay.clone();
+        this.contacts = new ArrayList<>();
+        if(another.contacts!=null)
+        {
+            for(String c: another.contacts)
+            {
+                this.contacts.add(new String(c));
+            }
+        }else {
+            this.contacts = new ArrayList<>();
+        }
     }
     @Override public String toString()
     {
@@ -65,6 +76,14 @@ class Human implements Serializable
     public String getSurname(){return surname;}
     public String getPatronomic(){return patronomic;}
 
+    public void addContact(String contact)
+    {
+        this.contacts.add(contact);
+    }
+    public ArrayList<String> getContacts()
+    {
+        return this.contacts;
+    }
     public int getID() {
         return Math.abs(surname.hashCode()+name.hashCode()+name.hashCode()+bithDay.get(Calendar.DAY_OF_MONTH)+bithDay.get(Calendar.MONTH)+bithDay.get(Calendar.YEAR));
     }
@@ -97,7 +116,7 @@ public class Employee extends Human implements Comparable<Employee>, Serializabl
     }
     public Employee(Employee other)//конструктор полного копирования
     {
-       super(new String(other.surname),new String(other.name),new String(other.patronomic),(Calendar)other.bithDay.clone());
+        super(other);
        workingRate = other.workingRate;
        post = other.post;
        department = other.department;

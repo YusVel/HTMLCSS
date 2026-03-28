@@ -290,20 +290,23 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
             if(tabbedPane.getComponentCount()>0)
             {
                 JTable table = ((JTable) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView());
-                removeListenersForChanging(table);
-                int currentlPosition = arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex());
-                if (currentlPosition > 0) {
-                    arrayContextsIPositionsTables.set(tabbedPane.getSelectedIndex(), currentlPosition - 1);
-                    table.setModel(arrayContextsTables.get(tabbedPane.getSelectedIndex()).get(currentlPosition - 1));
-                    table.getColumnModel().getColumn(0).setPreferredWidth(30);
-                    table.getColumnModel().getColumn(1).setPreferredWidth(200);
-                    for (int i = 2; i < table.getColumnCount(); i++) {
-                        table.getColumnModel().getColumn(i).setPreferredWidth(20);
+                if(table.getClass().equals(MainJTable.class))
+                {
+                    out.println("Выбранная таблица: MainJTable");
+                    removeListenersForChanging(table);
+                    int currentlPosition = arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex());
+                    if (currentlPosition > 0) {
+                        arrayContextsIPositionsTables.set(tabbedPane.getSelectedIndex(), currentlPosition - 1);
+                        table.setModel(arrayContextsTables.get(tabbedPane.getSelectedIndex()).get(currentlPosition - 1));
+                        table.getColumnModel().getColumn(0).setPreferredWidth(30);
+                        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+                        for (int i = 2; i < table.getColumnCount(); i++) {
+                            table.getColumnModel().getColumn(i).setPreferredWidth(20);
+                        }
+                        this.repaint();
                     }
-                    this.repaint();
-                }
-                addListenersForChanging(table);
-                out.println("НАЗАД! Количество кадров - " + arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() + ". Позиция(индекс) - " + arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex()));
+                    addListenersForChanging(table);
+                   }
             }
             else
             {
@@ -314,11 +317,11 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         }
          ///НАКАТ ИЗМЕНЕНИЙ
         if (e.getSource() == forwardButton) {
-            if(tabbedPane.getComponentCount()>0)
-            {
+            if(tabbedPane.getComponentCount()>0) {
                 outputConsolLine.setText("Накатить изменения!!");
                 creationDialog.setVisible(false);
                 JTable table = ((JTable) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView());
+                if(table.getClass().equals(MainJTable.class)) {
                 removeListenersForChanging(table);
                 int currentPosition = arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex());
                 if (currentPosition < arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() - 1) {
@@ -330,9 +333,9 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
                         table.getColumnModel().getColumn(i).setPreferredWidth(20);
                     }
                     this.repaint();
-                    out.println("ВПЕРЕД! Количество кадров - " + arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() + ". Позиция(индекс) - " + arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex()));
                 }
                 addListenersForChanging(table);
+            }
             }
             else
             {
@@ -542,7 +545,7 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         {
             outputConsolLine.setText("Редактировать карту сотрудника!!");
             creationDialog.setVisible(false);
-            if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(EmployeeTableModel.class)) {
+            if (tabbedPane.getComponentCount()>0&&arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(EmployeeTableModel.class)) {
                     ////////////из таблицы сотрудников//////////////
                     outputConsolLine.setText("Добавить сотрудника в таблицу с сотрудниkами");
                     TableEmployees table = ((TableEmployees) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView());

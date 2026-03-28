@@ -30,13 +30,6 @@ public class EmployeeTableModel extends AbstractTableModel{
         }
 
         this.employees = Employees;
-        
-        Employees.sort(new Comparator(){
-                                            @Override
-                                            public int compare(Object o1, Object o2) {
-                                                return ((Employee)o1).compareTo((Employee)o2);
-                                            }
-                                        });
         if(this.mode==SELECTABLE)
         {
            arrayBooleans = new ArrayList<Boolean>(employees.size());
