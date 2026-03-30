@@ -10,7 +10,7 @@
     <title>Введите Ваш ID</title>
 </head>
 <body>
-    <form action="Http://localhost:8080/">
+    <form >
         <label>Ваш ID: </br>
             <input class="inputID" type="text" name="id" maxlength="10">
         </label>

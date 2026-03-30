@@ -18,7 +18,7 @@
     </head>
     <body> 
         <header class="left_offset">
-            <span class="logo"><h1>РАБОЧИЙ ГРАФИК на ${requestScope.month} ${requestScope.year}</h1></span>
+            <span class="logo"><h1>РАБОЧИЙ ГРАФИК на ${requestScope.month} ${requestScope.year}</h1></span><span><h4 class="name">${requestScope.name}</h4></span>
             <div class="head">
                 <form >
                     <input type="hidden" name="id" value="${requestScope.idParametr}">
@@ -58,15 +58,24 @@
                         </tr>
                         <c:forEach var="i" begin="0" end="${requestScope.mainTable.getEmployees().size()-1}" >
                             <tr>
-                                <TD>${mainTable.getEmployees().get(i).getFullName()}</TD>
+                                <td <c:if test="${requestScope.name.equals(mainTable.getEmployees().get(i).getFullName())}">class="user" </c:if>>
+                                        ${mainTable.getEmployees().get(i).getFullName()}
+                                </td>
                                 <c:forEach var="designation" items="${mainTable.getEmployees().get(i).getWorkSchedule()}">
-                                    <td>
+                                    <td <c:if test="${requestScope.name.equals(mainTable.getEmployees().get(i).getFullName())}">class="user" </c:if>
+                                        <c:if test="${designation.toString().equals(\"\")}">class="dayoff" </c:if>
+                                        <c:if test="${designation.toString().equals(\"У\")}">class="morning" </c:if>
+                                        <c:if test="${designation.toString().equals(\"В\")}">class="evening" </c:if>
+                                        <c:if test="${designation.toString().equals(\"ОТ\")}">class="vacation" </c:if> >
                                             ${designation.toString()}
                                     </td>
                                 </c:forEach>
                             </tr>
                         </c:forEach>
                     </c:if>
+                </c:if>
+                <c:if test="${requestScope.mainTable eq null}">
+                    <h3>График еще не сформирован. Укажите год и месяц!</h3>
                 </c:if>
             </table>
         </main>

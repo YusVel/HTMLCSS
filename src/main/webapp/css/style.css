@@ -2,7 +2,7 @@
 
 
 *{
-    margin: 0;
+    margin: 3px;
     padding: 0;
 }
 
@@ -10,33 +10,80 @@ body{
     font-family: "Chiron GoRound TC", sans-serif;
     font-weight: 400;
     font-style: normal;
-    background-color: rgb(248, 255, 143);
+    background-color: rgb(214, 214, 214);
+    margin: auto;
 }
 a{
     text-decoration: none;
 }
-img{
-    max-width: 100%;
-}
+
 button, select{
+    margin:2px 0px 0px 0px;
     padding: 10px 20px;
     background-color: #ffffff;
     color: #000000;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s ease;
-
+    font-size: 12px;
+    transition: all 0.5s ease;
+    border-bottom: 2px solid #8addf8;
+    padding-bottom: 5px;
 }
 button:hover{
     background-color: #ffaeb2;
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 button:focus{
     outline:  2px solid #dbaeff;
     outline-offset:  2px;
 }
+
 .year {
     background-color: #ffaeb2;
+}
+table {
+    border: 3px solid #808080;
+    border-spacing: 2px;
+    margin: 5px 5px 5px 5px;
+}
+th{
+    position: sticky;
+    top: 0;
+    background-color: #a9a9a9;
+}
+td, th{
+    border: solid 1px #808080;
+}
+td{
+    padding:2px 2px 2px 2px;
+    min-width: 20px;
+    width: 20px;
+    height: 10px;
+}
+td:nth-of-type(1){
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 300px;
+    height: 10px;
+}
+.dayoff, .vacation{
+    background-color: rgb(246, 167, 167);
+}
+.evening{
+    color: #002cbb;
+}
+.morning{
+    color: #bb3a00;
+}
+.user{
+    background-color: #a9f88a;
+}
+td.user{
+    position: sticky;
+    top: 4%;
+}
+tr:hover{
+    background-color: #a9f88a;
 }

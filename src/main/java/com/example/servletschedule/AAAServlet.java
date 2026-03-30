@@ -12,6 +12,7 @@ import schedule.employee.Employee;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,31 +51,30 @@ public class AAAServlet extends HttpServlet {
         if (employeeWithIdParameter != null) {
             yearParametr = req.getParameter("year");
             monthParametr = req.getParameter("month");
+            String month = null;
+            String year = null;
             MainTable table = null;
             if (yearParametr != null && monthParametr != null) {
                 table = getMainTableFromArray(monthParametr, yearParametr);
             }
-            /// //////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/////////////////////////////////////////////////////////////
-            String month = DatePicker.MONTHS_OF_YEAR[table.getDate().get(Calendar.MONTH)];
-            String year = String.valueOf(table.getDate().get(Calendar.YEAR));
-            req.setAttribute("mainTable", table);
-            req.setAttribute("month", month);
-            req.setAttribute("year", year);
-            req.setAttribute("name", employeeWithIdParameter.getFullName());
-            req.setAttribute("years",years);
-            req.setAttribute("idParametr",idParametr);
+            if(table!=null) {
+                month = DatePicker.MONTHS_OF_YEAR[table.getDate().get(Calendar.MONTH)];
+                year = String.valueOf(table.getDate().get(Calendar.YEAR));
+                }
+                req.setAttribute("mainTable", table);
+                req.setAttribute("month", month);
+                req.setAttribute("year", year);
+                req.setAttribute("name", employeeWithIdParameter.getFullName());
+                req.setAttribute("years",years);
+                req.setAttribute("idParametr",idParametr);
             req.getRequestDispatcher("/i.jsp").forward(req, resp);
         } else {
             if (idParametr != null) {
                 req.setAttribute("ERROR", "Сотрудника с ID:" + idParametr + " не существует!");
             }
-
             this.getServletContext().getRequestDispatcher("/AAA.jsp").forward(req, resp);
-
             idParametr = "";
         }
-
-
     }
 
     private void initArraysWithEmployees() {
@@ -85,13 +85,13 @@ public class AAAServlet extends HttpServlet {
         ArrayList<File> fileWithEmployees = new ArrayList<>();
         for (String p : arrayFilesInCatalog) {
             if (p.endsWith(".emp")) {
-                fileWithEmployees.add(new File(Paths.get(path, p).toAbsolutePath().toString()));
+                Path pathToEmp = rootPath.toPath().resolve(p);
+                fileWithEmployees.add(new File(pathToEmp.toString()));
             }
         }
         for (File f : fileWithEmployees) {
             try {
-                String p = f.getAbsolutePath();
-                ArrayList<Employee> employees = Employee.readFromFile(p);
+                ArrayList<Employee> employees = Employee.readFromFile(f.getAbsolutePath());
                 arraysWithEmployees.add(employees);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("<p> ФАЙЛ СО СПИСКОМ СОТРУДНИКОВ " + f + " ПОВРЕЖДЕН!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
@@ -111,13 +111,13 @@ public class AAAServlet extends HttpServlet {
         ArrayList<File> filesWithMainTables = new ArrayList<>();
         for (String p : arrayFilesInCatalog) {
             if (p.endsWith(".tbl")) {
-                filesWithMainTables.add(new File(Paths.get(path, p).toAbsolutePath().toString()));
+                Path pathToTables = rootPath.toPath().resolve(p);
+                filesWithMainTables.add(new File(pathToTables.toString()));
             }
         }
         for (File f : filesWithMainTables) {
             try {
-                String p = f.getAbsolutePath();
-                MainTable table = MainTable.readTableFromFile(p);
+                MainTable table = MainTable.readTableFromFile(f.getAbsolutePath());
                 arraysWithMainTables.add(table);
                 years.add(String.valueOf(table.getDate().get(Calendar.YEAR)));
             } catch (ClassNotFoundException e) {
