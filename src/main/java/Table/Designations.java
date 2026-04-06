@@ -14,7 +14,7 @@ public class Designations implements Serializable { // объекты обозн
     public static String getAcceptables(){return String.join(",", ACCEPTABLE);}
     private int value; //обозначение в графике У,В,У/В,Б и тд
     private Boolean condition = true; //Действительно ли выходил на работу
-    private int indexOf(String val) //возвращает индекс элемента в массиве приемлемых значений иначе возвращает -1
+     static private int indexOf(String val) //возвращает индекс элемента в массиве приемлемых значений иначе возвращает -1
     {
         int counter = 0;
         for(String v:ACCEPTABLE)
