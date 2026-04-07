@@ -52,11 +52,13 @@
                     <c:if test="${requestScope.mainTable.getEmployees().size()!=0}">
                         <tr>
                             <th> ФИО </th>
-                            <c:forEach var="i" begin="0" end="${requestScope.mainTable.getEmployees().get(1).getWorkSchedule().size()-1}">
+                            <c:forEach var="i" begin="0"
+                                       end="${requestScope.mainTable.getEmployees().get(1).getWorkSchedule().size()-1}">
                                 <th>${i+1}</th>
                             </c:forEach>
                         </tr>
-                        <c:forEach var="i" begin="0" end="${requestScope.mainTable.getEmployees().size()-1}" >
+                        <c:forEach var="i" begin="0"
+                                   end="${requestScope.mainTable.getEmployees().size()-1}" >
                             <tr>
                                 <td <c:if test="${requestScope.name.equals(mainTable.getEmployees().get(i).getFullName())}">class="user" </c:if>>
                                         ${mainTable.getEmployees().get(i).getFullName()}

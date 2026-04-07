@@ -28,7 +28,6 @@ import java.io.File;
 
 import static java.lang.System.out;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import javax.swing.event.ChangeEvent;
@@ -38,53 +37,53 @@ import schedule.employee.TableEmployees;
 import schedule.employee.WindowEmployeeCreator;
 
 
-public class Schedule extends JFrame implements ActionListener, MouseListener, ComponentListener, CellEditorListener{
+public class Schedule extends JFrame implements ActionListener, MouseListener, ComponentListener, CellEditorListener {
     private int tableCount = 0;
-    int width = Toolkit.getDefaultToolkit().getScreenSize().width/2+300;
-    int height = Toolkit.getDefaultToolkit().getScreenSize().height/2;
+    int width = Toolkit.getDefaultToolkit().getScreenSize().width / 2 + 300;
+    int height = Toolkit.getDefaultToolkit().getScreenSize().height / 2;
     ArrayList<AbstractTableModel> arrayTableModels = new ArrayList<>(); //массив всех таблиц в главном окне
     ArrayList<ArrayList<AbstractTableModel>> arrayContextsTables = new ArrayList<ArrayList<AbstractTableModel>>();//здесь будем сохранять состояние таблиц
     ArrayList<Integer> arrayContextsIPositionsTables = new ArrayList<Integer>();
     String fileNameToSave;
-    
+
     JMenuBar menuBar = new JMenuBar();
     JMenu menuFile = new JMenu("Файл");
-        JMenu menuOpen = new JMenu("Открыть");
-            JMenuItem openScheduleMenu = new JMenuItem("График");
-            JMenuItem openEmployeesMenu = new JMenuItem("Список сотрудников");
-    JToolBar menuTools = new JToolBar ();
-            JButton backButton = new JButton(new ImageIcon(Paths.get("icons","arrow_back.png").toAbsolutePath().toString()));
-            JButton forwardButton = new JButton(new ImageIcon(Paths.get("icons","arrow_forward.png").toAbsolutePath().toString()));
-            JButton saveButton = new JButton(new ImageIcon(Paths.get("icons","save.png").toAbsolutePath().toString()));
-            JButton saveAsButton = new JButton(new ImageIcon(Paths.get("icons","save_as.png").toAbsolutePath().toString())); 
-            JButton createTableButton = new JButton(new ImageIcon(Paths.get("icons","create_table.png").toAbsolutePath().toString()));
-                JDialog creationDialog = new JDialog(this);
-                    JPanel creationPanel = new JPanel(new GridBagLayout());
-                        JButton createScheduleTable = new JButton("График");
-                        JButton createEmployeesTable = new JButton("Сотрудники");
-            JButton addEmployeeButton = new JButton(new ImageIcon(Paths.get("icons","add_employee.png").toAbsolutePath().toString()));
-            JButton removeEmployeeButton = new JButton(new ImageIcon(Paths.get("icons","remove_employee.png").toAbsolutePath().toString())); 
-            JButton editEmployeeButton = new JButton(new ImageIcon(Paths.get("icons","edit_employee.png").toAbsolutePath().toString()));   
+    JMenu menuOpen = new JMenu("Открыть");
+    JMenuItem openScheduleMenu = new JMenuItem("График");
+    JMenuItem openEmployeesMenu = new JMenuItem("Список сотрудников");
+    JToolBar menuTools = new JToolBar();
+    JButton backButton = new JButton(new ImageIcon(Paths.get("icons", "arrow_back.png").toAbsolutePath().toString()));
+    JButton forwardButton = new JButton(new ImageIcon(Paths.get("icons", "arrow_forward.png").toAbsolutePath().toString()));
+    JButton saveButton = new JButton(new ImageIcon(Paths.get("icons", "save.png").toAbsolutePath().toString()));
+    JButton saveAsButton = new JButton(new ImageIcon(Paths.get("icons", "save_as.png").toAbsolutePath().toString()));
+    JButton createTableButton = new JButton(new ImageIcon(Paths.get("icons", "create_table.png").toAbsolutePath().toString()));
+    JDialog creationDialog = new JDialog(this);
+    JPanel creationPanel = new JPanel(new GridBagLayout());
+    JButton createScheduleTable = new JButton("График");
+    JButton createEmployeesTable = new JButton("Сотрудники");
+    JButton addEmployeeButton = new JButton(new ImageIcon(Paths.get("icons", "add_employee.png").toAbsolutePath().toString()));
+    JButton removeEmployeeButton = new JButton(new ImageIcon(Paths.get("icons", "remove_employee.png").toAbsolutePath().toString()));
+    JButton editEmployeeButton = new JButton(new ImageIcon(Paths.get("icons", "edit_employee.png").toAbsolutePath().toString()));
     JMenu menuHelp = new JMenu("Help");
     JTabbedPane tabbedPane = new JTabbedPane();
     JTextField outputConsolLine = new JTextField();
-    Schedule()
-    {
-        String str = Paths.get("icons","arrow_back.ico").toAbsolutePath().toString();
-        System.out.println("ПУТЬ: "+str);
+
+    Schedule() {
+        String str = Paths.get("icons", "arrow_back.ico").toAbsolutePath().toString();
+        System.out.println("ПУТЬ: " + str);
         ////////////////////////////////Настройка главного окна//////////////////////////////////////////
         super("Schedule");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
-        this.setBounds(this.getLocation().x-width/2+70, this.getLocation().y-height/2+40, width, height);
+        this.setBounds(this.getLocation().x - width / 2 + 70, this.getLocation().y - height / 2 + 40, width, height);
         ////////////////////////////////////////////////Настройки меню Файл/////////////////////////////////////////////////////
         openEmployeesMenu.addActionListener(this);
         openScheduleMenu.addActionListener(this);
         menuOpen.add(openScheduleMenu);
         menuOpen.add(openEmployeesMenu);
         menuFile.add(menuOpen);
-        
+
         ///////////////////////////////////////////Настройки элементов главного MENU/////////////////////////////////////////////////////
         menuBar.add(menuFile);
         menuBar.add(new JSeparator(JSeparator.VERTICAL));
@@ -100,7 +99,7 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         editEmployeeButton.addActionListener(this);
         createScheduleTable.addActionListener(this);
         createEmployeesTable.addActionListener(this);
-        
+
         backButton.addMouseListener(this);
         forwardButton.addMouseListener(this);
         saveButton.addMouseListener(this);
@@ -112,7 +111,7 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         createScheduleTable.addMouseListener(this);
         createEmployeesTable.addMouseListener(this);
         tabbedPane.addMouseListener(this);
- 
+
         backButton.setBackground(new Color(212, 210, 210));
         forwardButton.setBackground(new Color(212, 210, 210));
         saveButton.setBackground(new Color(212, 210, 210));
@@ -121,21 +120,23 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         addEmployeeButton.setBackground(new Color(212, 210, 210));
         removeEmployeeButton.setBackground(new Color(212, 210, 210));
         editEmployeeButton.setBackground(new Color(212, 210, 210));
-        createEmployeesTable.setBackground(new Color(212, 210, 210)); 
-        createScheduleTable.setBackground(new Color(212, 210, 210)); 
-        
+        createEmployeesTable.setBackground(new Color(212, 210, 210));
+        createScheduleTable.setBackground(new Color(212, 210, 210));
+
         creationDialog.setLayout(new GridBagLayout());
-        creationDialog.setLocation(this.getX()+57,this.getY()+225);
+        creationDialog.setLocation(this.getX() + 57, this.getY() + 225);
         creationDialog.setBackground(new Color(112, 112, 112));
         creationDialog.setVisible(false);
-        creationPanel.add(createScheduleTable,new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.CENTER,GridBagConstraints.BOTH,new Insets(1,1,1,1),0,0));
-        creationPanel.add(createEmployeesTable,new GridBagConstraints(0,1,1,1,0,0,GridBagConstraints.CENTER,GridBagConstraints.BOTH,new Insets(1,1,1,1),0,0));
+        creationPanel.add(createScheduleTable, new GridBagConstraints(0, 0, 1, 1, 0, 0
+                , GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(1, 1, 1, 1), 0, 0));
+        creationPanel.add(createEmployeesTable, new GridBagConstraints(0, 1, 1, 1, 0, 0
+                , GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(1, 1, 1, 1), 0, 0));
         creationDialog.add(creationPanel);
         creationDialog.setUndecorated(true);
-        creationDialog.pack(); 
+        creationDialog.pack();
         creationDialog.setModal(false);
         this.addComponentListener(this);
-        
+
         menuTools.add(backButton);
         menuTools.add(forwardButton);
         menuTools.add(saveButton);
@@ -154,52 +155,50 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         outputConsolLine.setFont(new Font("Verdena", Font.ITALIC, 14));
         ////////////////////////////////////Добавляем все элементы в главное окно/////////////////////////////////
         this.setJMenuBar(menuBar);
-        this.add(menuTools,BorderLayout.WEST);
-        this.add(outputConsolLine,BorderLayout.SOUTH);
-        this.add(tabbedPane,BorderLayout.CENTER);
-      
+        this.add(menuTools, BorderLayout.WEST);
+        this.add(outputConsolLine, BorderLayout.SOUTH);
+        this.add(tabbedPane, BorderLayout.CENTER);
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         this.setVisible(true);
     }
 
-    public void addScrollTable(JScrollPane scrollTable)
-    {
+    public void addScrollTable(JScrollPane scrollTable) {
         JTable table = ((JTable) scrollTable.getViewport().getView());
         AbstractTableModel tableModel = (AbstractTableModel) table.getModel();
         addListenersForChanging(table); //добавляем слушателея для отслеживания изменений в ячейках
         if (tableModel.getClass().equals(ScheduleTableModel.class)) {
-            ((ScheduleTableModel)tableModel).setID(tableCount);
+            ((ScheduleTableModel) tableModel).setID(tableCount);
             tableCount++;
-            MainTable mainTable = ((ScheduleTableModel)tableModel).getMainTable();
-            tabbedPane.addTab(String.format("%s %d", DatePicker.MONTHS_OF_YEAR[mainTable.getDate().get(Calendar.MONTH)].toUpperCase(), mainTable.getDate().get(Calendar.YEAR)), null, scrollTable, "");
+            MainTable mainTable = ((ScheduleTableModel) tableModel).getMainTable();
+            tabbedPane.addTab(String.format("%s %d", DatePicker.MONTHS_OF_YEAR[mainTable.getDate().get(Calendar.MONTH)].toUpperCase(),
+                    mainTable.getDate().get(Calendar.YEAR)), null, scrollTable, "");
             arrayTableModels.add(tableModel);
             arrayContextsTables.add(new ArrayList<AbstractTableModel>());
-            arrayContextsTables.get(tableCount-1).add(new ScheduleTableModel((ScheduleTableModel) tableModel));// добавляем первый кадр в массив моделей
+            arrayContextsTables.get(tableCount - 1).add(new ScheduleTableModel((ScheduleTableModel) tableModel));// добавляем первый кадр в массив моделей
             arrayContextsIPositionsTables.add(0);// У первого кадра поциция 0
-        }
-        else if (tableModel.getClass().equals(EmployeeTableModel.class)) {
+        } else if (tableModel.getClass().equals(EmployeeTableModel.class)) {
             ((EmployeeTableModel) tableModel).setID(tableCount);
             tableCount++;
-            tabbedPane.addTab("Employees" + DatePicker.MONTHS_OF_YEAR[Calendar.getInstance().get(Calendar.MONTH)] + Calendar.getInstance().get(Calendar.YEAR) + ".emp", null, scrollTable, "");
+            tabbedPane.addTab("Employees" + DatePicker.MONTHS_OF_YEAR[Calendar.getInstance().get(Calendar.MONTH)]
+                    + Calendar.getInstance().get(Calendar.YEAR)
+                    + ".emp", null, scrollTable, "");
             arrayTableModels.add(tableModel);
             arrayContextsTables.add(new ArrayList<AbstractTableModel>());
             arrayContextsTables.get(tableCount - 1).add(tableModel);// добавляем первый кадр в массив моделей
         }
         this.repaint();
     }
-    private Integer isIdMatchedInContextsTablesArray(Integer ID)
-    {
-        for(int i = 0;i<arrayContextsTables.size();i++)
-        {
+
+    private Integer isIdMatchedInContextsTablesArray(Integer ID) {
+        for (int i = 0; i < arrayContextsTables.size(); i++) {
             AbstractTableModel tableModel = arrayContextsTables.get(i).get(0);
-            if(tableModel.getClass().equals(ScheduleTableModel.class))
-            {
+            if (tableModel.getClass().equals(ScheduleTableModel.class)) {
                 if (((ScheduleTableModel) tableModel).getID().equals(ID)) {
                     return i;
                 }
             }
-            if(tableModel.getClass().equals(EmployeeTableModel.class))
-            {
+            if (tableModel.getClass().equals(EmployeeTableModel.class)) {
                 if (((EmployeeTableModel) tableModel).getID().equals(ID)) {
                     return i;
                 }
@@ -207,9 +206,9 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         }
         return -1;
     }
-    
-    
-    
+
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == openEmployeesMenu)//Открываемт аблицу с сотрудниками
@@ -230,7 +229,7 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
                         tabbedPane.repaint();
                         this.setMinimumSize(new Dimension(width, height));
                         this.pack();
-                        outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString()+ " ОТКРЫТ! ID = " +((EmployeeTableModel)table.getModel()).getID());
+                        outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString() + " ОТКРЫТ! ID = " + ((EmployeeTableModel) table.getModel()).getID());
                     } catch (ClassNotFoundException ex) {
                         out.println(ex);
                     } catch (FileNotFoundException ex) {
@@ -267,7 +266,8 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
                         MainJTable table = new MainJTable(tableModel);
                         addScrollTable(new JScrollPane(table));
                         tableModel.fireTableDataChanged();
-                        outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString()+" ОТКРЫТ! ID = " +((ScheduleTableModel)table.getModel()).getID());
+                        outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString()
+                                        + " ОТКРЫТ! ID = " + ((ScheduleTableModel) table.getModel()).getID());
                     } catch (ClassNotFoundException ex) {
                         out.println(ex);
                     } catch (FileNotFoundException ex) {
@@ -284,14 +284,12 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
                     break;
             }
         }
-        if(e.getSource()==backButton)//////////////////////Откатить Изменения///////////////////
-        {
+        //////////////////////Откатить Изменения///////////////////
+        if (e.getSource() == backButton) {
             creationDialog.setVisible(false);
-            if(tabbedPane.getComponentCount()>0)
-            {
+            if (tabbedPane.getComponentCount() > 0) {
                 JTable table = ((JTable) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView());
-                if(table.getClass().equals(MainJTable.class))
-                {
+                if (table.getClass().equals(MainJTable.class)) {
                     out.println("Выбранная таблица: MainJTable");
                     removeListenersForChanging(table);
                     int currentlPosition = arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex());
@@ -306,64 +304,62 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
                         this.repaint();
                     }
                     addListenersForChanging(table);
-                   }
-            }
-            else
-            {
+                }
+            } else {
                 out.println("Нечего откатывать!!");
                 outputConsolLine.setText("Нечего откатывать!!");
             }
-            
         }
          ///НАКАТ ИЗМЕНЕНИЙ
         if (e.getSource() == forwardButton) {
-            if(tabbedPane.getComponentCount()>0) {
+            if (tabbedPane.getComponentCount() > 0) {
                 outputConsolLine.setText("Накатить изменения!!");
                 creationDialog.setVisible(false);
                 JTable table = ((JTable) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView());
-                if(table.getClass().equals(MainJTable.class)) {
-                removeListenersForChanging(table);
-                int currentPosition = arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex());
-                if (currentPosition < arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() - 1) {
-                    arrayContextsIPositionsTables.set(tabbedPane.getSelectedIndex(), currentPosition + 1);
-                    table.setModel(arrayContextsTables.get(tabbedPane.getSelectedIndex()).get(currentPosition + 1));
-                    table.getColumnModel().getColumn(0).setPreferredWidth(30);
-                    table.getColumnModel().getColumn(1).setPreferredWidth(200);
-                    for (int i = 2; i < table.getColumnCount(); i++) {
-                        table.getColumnModel().getColumn(i).setPreferredWidth(20);
+                if (table.getClass().equals(MainJTable.class)) {
+                    removeListenersForChanging(table);
+                    int currentPosition = arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex());
+                    if (currentPosition < arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() - 1) {
+                        arrayContextsIPositionsTables.set(tabbedPane.getSelectedIndex(), currentPosition + 1);
+                        table.setModel(arrayContextsTables.get(tabbedPane.getSelectedIndex()).get(currentPosition + 1));
+                        table.getColumnModel().getColumn(0).setPreferredWidth(30);
+                        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+                        for (int i = 2; i < table.getColumnCount(); i++) {
+                            table.getColumnModel().getColumn(i).setPreferredWidth(20);
+                        }
+                        this.repaint();
                     }
-                    this.repaint();
+                    addListenersForChanging(table);
                 }
-                addListenersForChanging(table);
-            }
-            }
-            else
-            {
-                 out.println("Нечего накатывать!!");
+            } else {
+                out.println("Нечего накатывать!!");
             }
         }
-        if(e.getSource()==saveButton)///////////////СОХРАНИТЬ///////////////
-        {
+        ///////////////СОХРАНИТЬ///////////////
+        if (e.getSource() == saveButton) {
             creationDialog.setVisible(false);
             if (tabbedPane.getComponentCount() == 0) {
                 outputConsolLine.setText("What? Нет ни обной таблицы для сохранения");
             } else {
                 if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(ScheduleTableModel.class)) //если вбранная таблица - график,
                 {
-                    fileNameToSave = ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex())).getMainTable().getShortFileNameToSave();//то вытаскиваем имя изнутри модели
+                    fileNameToSave = ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex()))
+                            .getMainTable().getShortFileNameToSave();//то вытаскиваем имя изнутри модели
                     try {
-                        ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex())).getMainTable().writeTableToFile(Paths.get(fileNameToSave).toAbsolutePath().toString());
+                        ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex()))
+                                .getMainTable().writeTableToFile(Paths.get(fileNameToSave).toAbsolutePath().toString());
                     } catch (FileNotFoundException ex) {
                         outputConsolLine.setText("Ошибка сохранения файла: ");
                     }
                 } else if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(EmployeeTableModel.class))//если вбранная таблица - таблица сотрудников,
                 {
                     fileNameToSave = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());//то вытаскиваем имя изнутри компонента
-                    EmployeeTableModel tableModel = (EmployeeTableModel)(((TableEmployees)((JScrollPane)(tabbedPane.getSelectedComponent())).getViewport().getView()).getModel());
+                    EmployeeTableModel tableModel = (EmployeeTableModel) (((TableEmployees) ((JScrollPane) (tabbedPane.getSelectedComponent()))
+                            .getViewport().getView()).getModel());
                     try {
                         Employee.writeToFile(tableModel.getEmployees(), Paths.get(fileNameToSave).toAbsolutePath().toString());
                     } catch (FileNotFoundException ex) {
-                          outputConsolLine.setText("Ошибка сохранения файла: "+fileNameToSave);
+                        outputConsolLine.setText("Ошибка сохранения файла: " + fileNameToSave);
                     }
                 }
                 outputConsolLine.setText("Сохраняем в " + Paths.get(fileNameToSave).toAbsolutePath().toString());
@@ -371,19 +367,21 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
             }
 
         }
+        /////////////СОХРАНИТЬ КАК////////////
         if (e.getSource() == saveAsButton) {
-            /////////////СОХРАНИТЬ КАК////////////
             creationDialog.setVisible(false);
             if (tabbedPane.getComponentCount() == 0) {
                 outputConsolLine.setText("What? Нет ни обной таблицы для сохранения");
-            } else if (((JScrollPane) (tabbedPane.getSelectedComponent())).getViewport().getView().getClass().equals(MainJTable.class)) {
+            } else if (((JScrollPane) (tabbedPane.getSelectedComponent())).getViewport()
+                    .getView().getClass().equals(MainJTable.class)) {
                 outputConsolLine.setText("Сохранить как!! " + MainJTable.class);
                 JFileChooser fDialog = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
                 fDialog.setDialogType(JFileChooser.SAVE_DIALOG);
                 fDialog.setAcceptAllFileFilterUsed(false);
                 fDialog.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 fDialog.setFileFilter(new TblFileFilter());
-                fileNameToSave = ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex())).getMainTable().getShortFileNameToSave();//то вытаскиваем имя изнутри модели
+                fileNameToSave = ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex()))
+                        .getMainTable().getShortFileNameToSave();//то вытаскиваем имя изнутри модели
                 fDialog.setSelectedFile(new File(fileNameToSave));
                 int err = fDialog.showSaveDialog(this);
                 switch (err) {
@@ -392,22 +390,23 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
 
                         try {
                             outputConsolLine.setText("Сохраняем в " + fDialog.getSelectedFile().toString());
-                            ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex())).getMainTable().writeTableToFile(fDialog.getSelectedFile().toString());
+                            ((ScheduleTableModel) arrayTableModels.get(tabbedPane.getSelectedIndex()))
+                                    .getMainTable().writeTableToFile(fDialog.getSelectedFile().toString());
                         } catch (FileNotFoundException ex) {
                             outputConsolLine.setText("Невозможно сохранить файл: " + fDialog.getSelectedFile().toString());
                         }
 
                     }
                     case JFileChooser.ERROR_OPTION ->
-                        JOptionPane.showMessageDialog(this, "Невозможно сохранить", "ERROR!", JOptionPane.WARNING_MESSAGE);
-                    case JFileChooser.CANCEL_OPTION ->
-                        outputConsolLine.setText("Сохранение отменено!");
+                            JOptionPane.showMessageDialog(this, "Невозможно сохранить"
+                                    , "ERROR!", JOptionPane.WARNING_MESSAGE);
+                    case JFileChooser.CANCEL_OPTION -> outputConsolLine.setText("Сохранение отменено!");
                     default -> {
                     }
                 }
-            }
-            else if(((JScrollPane)(tabbedPane.getSelectedComponent())).getViewport().getView().getClass().equals(TableEmployees.class)) {
-                outputConsolLine.setText("Сохранить как!! "+TableEmployees.class);
+            } else if (((JScrollPane) (tabbedPane.getSelectedComponent())).getViewport()
+                    .getView().getClass().equals(TableEmployees.class)) {
+                outputConsolLine.setText("Сохранить как!! " + TableEmployees.class);
                 JFileChooser fDialog = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
                 fDialog.setDialogType(JFileChooser.SAVE_DIALOG);
                 fDialog.setAcceptAllFileFilterUsed(false);
@@ -416,26 +415,29 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
                 fileNameToSave = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
                 fDialog.setSelectedFile(new File(fileNameToSave));
                 int err = fDialog.showSaveDialog(this);
-                switch(err)
-                {
-                    case JFileChooser.APPROVE_OPTION: 
-                        EmployeeTableModel tableModel = (EmployeeTableModel)(((TableEmployees)((JScrollPane)(tabbedPane.getSelectedComponent())).getViewport().getView()).getModel());
+                switch (err) {
+                    case JFileChooser.APPROVE_OPTION:
+                        EmployeeTableModel tableModel = (EmployeeTableModel) (((TableEmployees) ((JScrollPane) (tabbedPane.getSelectedComponent()))
+                                .getViewport().getView()).getModel());
                     {
                         try {
-                            Employee.writeToFile(tableModel.getEmployees(),fDialog.getSelectedFile().toString());
+                            Employee.writeToFile(tableModel.getEmployees(), fDialog.getSelectedFile().toString());
                         } catch (IOException ex) {
                             outputConsolLine.setText("Невозможно сохранить файл: " + fDialog.getSelectedFile().toString());
                         }
                     }
+                    break;
+                    case JFileChooser.CANCEL_OPTION:
+                        outputConsolLine.setText("Сохранение TableEmployees отменено!!");
                         break;
-
-                    case JFileChooser.CANCEL_OPTION:outputConsolLine.setText("Сохранение TableEmployees отменено!!");break;
-                    case JFileChooser.ERROR_OPTION:JOptionPane.showMessageDialog(this, "Невозможно сохранить", "ERROR!", JOptionPane.WARNING_MESSAGE);break;
+                    case JFileChooser.ERROR_OPTION:
+                        JOptionPane.showMessageDialog(this, "Невозможно сохранить", "ERROR!", JOptionPane.WARNING_MESSAGE);
+                        break;
                 }
             }
-
         }
-        if (e.getSource() == createScheduleTable) {//Создать рабочий график 
+        //Создать рабочий график
+        if (e.getSource() == createScheduleTable) {
             JFileChooser fDialog = new JFileChooser(new File(Paths.get("").toAbsolutePath().toString()));
             fDialog.setDialogTitle("Выберите файл с сотрудниками для генерации графика");
             fDialog.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -444,21 +446,22 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
             fDialog.setFileFilter(new EmpFileFilter());
             int err = fDialog.showOpenDialog(this);
             switch (err) {
-                case JFileChooser.APPROVE_OPTION:
-                {
+                case JFileChooser.APPROVE_OPTION: {
                     try {
                         new CreationNewTableDialog(this, Employee.readFromFile(fDialog.getSelectedFile().toString()));
                     } catch (IOException ex) {
-                        outputConsolLine.setText("Файл "+fDialog.getSelectedFile().toString()+ " поврежден! Создайте новый файл со списком мотрудников! (Ошибка ввода/вывода*)");
+                        outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString() +
+                                " поврежден! Создайте новый файл со списком мотрудников! (Ошибка ввода/вывода*)");
                     } catch (ClassNotFoundException ex) {
-                        outputConsolLine.setText("Файл "+fDialog.getSelectedFile().toString()+ " поврежден! Создайте новый файл со списком мотрудников!");
+                        outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString() +
+                                " поврежден! Создайте новый файл со списком мотрудников!");
                     }
                 }
-                    
-                    break;
+
+                break;
 
                 case JFileChooser.ERROR_OPTION:
-                    outputConsolLine.setText("Файл "+fDialog.getSelectedFile().toString()+ " поврежден или отсутствует! Неизвестная ошибка!");
+                    outputConsolLine.setText("Файл " + fDialog.getSelectedFile().toString() + " поврежден или отсутствует! Неизвестная ошибка!");
                     break;
                 case JFileChooser.CANCEL_OPTION:
                     outputConsolLine.setText("Открытие файла отменено!");
@@ -474,24 +477,29 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
             creationDialog.setVisible(false);
             this.repaint();
         }
-        if(e.getSource()==createTableButton)///////////////////СОздать новый График//////////////////////////////
+        ///////////////////СОздать новый График//////////////////////////////
+        if(e.getSource()==createTableButton)
         {
-            outputConsolLine.setText("Создать новый график!!");
+            outputConsolLine.setText("Создать новую таблицу");
             creationDialog.setVisible(true);
             this.repaint();
         }
-        if (e.getSource() == addEmployeeButton) { ////////////////////////ДОБАВИТЬ СОТРУДНИКА/////////////////
+        ////////////////////////ДОБАВИТЬ СОТРУДНИКА/////////////////
+        if (e.getSource() == addEmployeeButton) {
             creationDialog.setVisible(false);
             if (tabbedPane.getComponentCount() == 0) {
                 outputConsolLine.setText("Для того, чтобы  добавить сотрудника, создайте сначала таблицу");
             } else {
                 outputConsolLine.setText("Добавить сотрудника!!");
-                if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(EmployeeTableModel.class)) {////////////к списку сотрудников//////////////
+                ////////////к списку сотрудников//////////////
+                if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(EmployeeTableModel.class)) {
                     outputConsolLine.setText("Добавить сотрудника в таблицу с сотрудниkами");
-                    EmployeeTableModel tableModel = (EmployeeTableModel) ((TableEmployees) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView()).getModel();
+                    EmployeeTableModel tableModel = (EmployeeTableModel) ((TableEmployees) ((JScrollPane) tabbedPane
+                            .getSelectedComponent()).getViewport().getView()).getModel();
                     tableModel.addRowWithEmployee(new WindowEmployeeCreator().createNewEmployee());
                     tableModel.fireTableDataChanged();
-                } else if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(ScheduleTableModel.class)) { //////////////в рабочий график/////////////////
+                } //////////////в рабочий график/////////////////
+                else if (arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(ScheduleTableModel.class)) {
                     outputConsolLine.setText("Добавить сотрудника в таблицу с рабочим графиком");
                     ScheduleTableModel tableModel = (ScheduleTableModel)arrayTableModels.get(tabbedPane.getSelectedIndex());
                     tableModel.addEmployee(new WindowEmployeeCreator().createNewEmployee());
@@ -545,7 +553,8 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         {
             outputConsolLine.setText("Редактировать карту сотрудника!!");
             creationDialog.setVisible(false);
-            if (tabbedPane.getComponentCount()>0&&arrayTableModels.get(tabbedPane.getSelectedIndex()).getClass().equals(EmployeeTableModel.class)) {
+            if (tabbedPane.getComponentCount()>0&&arrayTableModels.get(tabbedPane.getSelectedIndex())
+                    .getClass().equals(EmployeeTableModel.class)) {
                     ////////////из таблицы сотрудников//////////////
                     outputConsolLine.setText("Добавить сотрудника в таблицу с сотрудниkами");
                     TableEmployees table = ((TableEmployees) ((JScrollPane) tabbedPane.getSelectedComponent()).getViewport().getView());
@@ -570,21 +579,21 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         {
             System.out.println("clik!!!!!");
         }
-        
+
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getSource()==tabbedPane)
-        {
+        if (e.getSource() == tabbedPane) {
             creationDialog.setVisible(false);
-            outputConsolLine.setText("№ "+tabbedPane.getSelectedIndex());
+            outputConsolLine.setText("№ " + tabbedPane.getSelectedIndex());
         }
-        
+
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -593,36 +602,40 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
     @Override
     public void mouseEntered(MouseEvent e) {
         if (e.getSource() instanceof JButton) {
-           ((JButton)e.getSource()).setBackground(new Color(252, 252, 217)); 
+            ((JButton) e.getSource()).setBackground(new Color(252, 252, 217));
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         if (e.getSource() instanceof JButton) {
-            ((JButton)e.getSource()).setBackground(new Color(212, 210, 210));
+            ((JButton) e.getSource()).setBackground(new Color(212, 210, 210));
         }
     }
 
     @Override
     public void componentResized(ComponentEvent e) {
-    creationDialog.setLocation(this.getX()+57,this.getY()+225);
-    creationDialog.setVisible(false);}
+        creationDialog.setLocation(this.getX() + 57, this.getY() + 225);
+        creationDialog.setVisible(false);
+    }
 
     @Override
     public void componentMoved(ComponentEvent e) {
-    creationDialog.setLocation(this.getX()+57,this.getY()+225);
-    creationDialog.setVisible(false);}
+        creationDialog.setLocation(this.getX() + 57, this.getY() + 225);
+        creationDialog.setVisible(false);
+    }
 
     @Override
     public void componentShown(ComponentEvent e) {
-    creationDialog.setLocation(this.getX()+57,this.getY()+225);
-    creationDialog.setVisible(false);}
+        creationDialog.setLocation(this.getX() + 57, this.getY() + 225);
+        creationDialog.setVisible(false);
+    }
 
     @Override
     public void componentHidden(ComponentEvent e) {
-    creationDialog.setLocation(this.getX()+57,this.getY()+225);
-    creationDialog.setVisible(false);}
+        creationDialog.setLocation(this.getX() + 57, this.getY() + 225);
+        creationDialog.setVisible(false);
+    }
 
 
     @Override
@@ -634,19 +647,23 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         ArrayList<AbstractTableModel> array = arrayContextsTables.get(tabbedPane.getSelectedIndex());
         if (currentPosition != sizeСurrentArrayContextsTable - 1) //если мы внесли изменения в таблицы, которая откатывалась, то все следующие кадры мы удвляем
         {
-            out.println("Текущая позиция(индекс): " + currentPosition + " Размер массива: " + sizeСurrentArrayContextsTable);
-            array.removeAll(array.subList(currentPosition +1, sizeСurrentArrayContextsTable));
-            
+            out.println("Текущая позиция(индекс): " + currentPosition
+                    + " Размер массива: " + sizeСurrentArrayContextsTable);
+            array.removeAll(array.subList(currentPosition + 1, sizeСurrentArrayContextsTable));
+
             arrayContextsIPositionsTables.set(tabbedPane.getSelectedIndex(), currentPosition);
-            arrayContextsTables.get(tabbedPane.getSelectedIndex()).set(currentPosition,new ScheduleTableModel((ScheduleTableModel) tableModel));
-            
+            arrayContextsTables.get(tabbedPane.getSelectedIndex())
+                    .set(currentPosition, new ScheduleTableModel((ScheduleTableModel) tableModel));
+
         } else {
             arrayContextsIPositionsTables.set(tabbedPane.getSelectedIndex(), currentPosition + 1);
             arrayContextsTables.get(tabbedPane.getSelectedIndex()).add(new ScheduleTableModel((ScheduleTableModel) tableModel));
         }
 
 
-        out.println("Изменения в таблице № " + tabbedPane.getSelectedIndex() + " сохранены! Количество кадров - " + arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() + ". Позиция(индекс) - " + arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex()));
+        out.println("Изменения в таблице № " + tabbedPane.getSelectedIndex() + " сохранены! Количество кадров - "
+                + arrayContextsTables.get(tabbedPane.getSelectedIndex()).size() + ". Позиция(индекс) - "
+                + arrayContextsIPositionsTables.get(tabbedPane.getSelectedIndex()));
     }
 
     @Override
@@ -668,11 +685,11 @@ public class Schedule extends JFrame implements ActionListener, MouseListener, C
         table.getDefaultEditor(Designations.class).removeCellEditorListener(this);
     }
 
-
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InterruptedException {
-        Thread one = new Thread(()->{new Schedule();});
+        Thread one = new Thread(() -> {
+            new Schedule();
+        });
         one.start();
         System.out.println(one.getName());
-
     }
 }

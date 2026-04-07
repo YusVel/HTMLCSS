@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TreeSet;
 
-@WebServlet("/")
+@WebServlet("/") //корневая сетевая папка /
 public class AAAServlet extends HttpServlet {
     ArrayList<ArrayList<Employee>> arraysWithEmployees = new ArrayList<>(); // массивы с сотрудниками
     ArrayList<MainTable> arraysWithMainTables = new ArrayList<MainTable>();
@@ -57,16 +57,16 @@ public class AAAServlet extends HttpServlet {
             if (yearParametr != null && monthParametr != null) {
                 table = getMainTableFromArray(monthParametr, yearParametr);
             }
-            if(table!=null) {
+            if (table != null) {
                 month = DatePicker.MONTHS_OF_YEAR[table.getDate().get(Calendar.MONTH)];
                 year = String.valueOf(table.getDate().get(Calendar.YEAR));
-                }
-                req.setAttribute("mainTable", table);
-                req.setAttribute("month", month);
-                req.setAttribute("year", year);
-                req.setAttribute("name", employeeWithIdParameter.getFullName());
-                req.setAttribute("years",years);
-                req.setAttribute("idParametr",idParametr);
+            }
+            req.setAttribute("mainTable", table);
+            req.setAttribute("month", month);
+            req.setAttribute("year", year);
+            req.setAttribute("name", employeeWithIdParameter.getFullName());
+            req.setAttribute("years", years);
+            req.setAttribute("idParametr", idParametr);
             req.getRequestDispatcher("/i.jsp").forward(req, resp);
         } else {
             if (idParametr != null) {
@@ -94,11 +94,14 @@ public class AAAServlet extends HttpServlet {
                 ArrayList<Employee> employees = Employee.readFromFile(f.getAbsolutePath());
                 arraysWithEmployees.add(employees);
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException("<p> ФАЙЛ СО СПИСКОМ СОТРУДНИКОВ " + f + " ПОВРЕЖДЕН!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
+                throw new RuntimeException("<p> ФАЙЛ СО СПИСКОМ СОТРУДНИКОВ " + f
+                        + " ПОВРЕЖДЕН!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
             } catch (FileNotFoundException e) {
-                throw new RuntimeException("<p> ФАЙЛ СО СПИСКОМ СОТРУДНИКОВ " + f + " НЕ НАЙДЕН!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
+                throw new RuntimeException("<p> ФАЙЛ СО СПИСКОМ СОТРУДНИКОВ " + f
+                        + " НЕ НАЙДЕН!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
             } catch (IOException e) {
-                throw new RuntimeException("<p>ВО ВРЕМЯ ЧТЕНИЯ ФАЙЛА СО СПИСКОМ СОТРУДНИКОВ " + f + " ПРОИЗОШЛА ОШИБКА!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
+                throw new RuntimeException("<p>ВО ВРЕМЯ ЧТЕНИЯ ФАЙЛА СО СПИСКОМ СОТРУДНИКОВ " + f
+                        + " ПРОИЗОШЛА ОШИБКА!!!</p> Обратитесь к АДМИНИСТРАТОРУ!");
             }
         }
     }

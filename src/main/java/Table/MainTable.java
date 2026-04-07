@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Table;
 
 import Date.DatePicker;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,10 +11,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
+
 import schedule.employee.Employee;
 
 public class MainTable implements Serializable {
@@ -27,17 +24,15 @@ public class MainTable implements Serializable {
     private String fileName;
 
     public MainTable(MainTable another) {
-        if(another.arrEmployees!=null)
-        {
+        if (another.arrEmployees != null) {
             arrEmployees = new ArrayList<Employee>();
-            for(Employee el:another.arrEmployees)
-            {
+            for (Employee el : another.arrEmployees) {
                 arrEmployees.add(new Employee(el));
             }
         }
-        date = (Calendar)another.date.clone();
+        date = (Calendar) another.date.clone();
         workingHoursPerMonth = another.workingHoursPerMonth;
-        fileName =new String(another.fileName);
+        fileName = new String(another.fileName);
     }
 
     public MainTable(ArrayList<Employee> arrEmployees, Calendar date, Double workingHoursPerMonth) {
@@ -57,10 +52,10 @@ public class MainTable implements Serializable {
         this.workingHoursPerMonth = workingHoursPerMonth;
         if (arrEmployees.isEmpty()) {
             System.out.println("Load empty arrayList<Emplyee>");
-        
-        /////ToDo/////
+
+            /////ToDo/////
         }
-        
+
         fileName = "Schedue_of_" + DatePicker.MONTHS_OF_YEAR[date.get(Calendar.MONTH)] + "_" + date.get(Calendar.YEAR) + ".tbl";
 
         System.out.println("График на " + DatePicker.MONTHS_OF_YEAR[date.get(Calendar.MONTH)] + " " + date.get(Calendar.YEAR) + "год " + workingHoursPerMonth + " ч. Будет охранен в " + fileName);
@@ -74,8 +69,8 @@ public class MainTable implements Serializable {
         genereteDesignationsForAllEmployees();
     }
 
-    ////////////////метод авогенерации массива с обозначениями ArraList<Designations> у всех сотрудников///////////////////////////////
-     
+    /// /////////////метод авогенерации массива с обозначениями ArraList<Designations> у всех сотрудников///////////////////////////////
+
     private void genereteDesignationsForAllEmployees() {
         Calendar firstDayMonthofWeek = Calendar.getInstance();
         firstDayMonthofWeek.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), 1); //первый день текущего месяца
@@ -113,7 +108,7 @@ public class MainTable implements Serializable {
         }
     }
 
-    ////////////////////метод авогенерации массива с обозначениями ArraList<Designations>  для ОДНОГО сотрудников/////////////////////////
+    /// /////////////////метод авогенерации массива с обозначениями ArraList<Designations>  для ОДНОГО сотрудников/////////////////////////
     private void genereteDesignations(Employee e) {
         e.setWorkSchedule(new ArrayList<Designations>());
         Calendar firstDayMonthofWeek = Calendar.getInstance();
@@ -149,7 +144,7 @@ public class MainTable implements Serializable {
     }
     //Инициализация массива с обозначениями ArraList<Designations> для одного сотрудника//
 
-    /////////////////////////Геттеры////////////////////////////////////
+    /// //////////////////////Геттеры////////////////////////////////////
     public ArrayList<Employee> getEmployees() {
         return arrEmployees;
     }
@@ -159,6 +154,7 @@ public class MainTable implements Serializable {
     }
 
     ;
+
     public Double getWorkingHours() {
         return workingHoursPerMonth;
     }
@@ -167,7 +163,7 @@ public class MainTable implements Serializable {
         return fileName;
     }
 
-    //////////////////////////Сеттеры////////////////////////////////
+    /// ///////////////////////Сеттеры////////////////////////////////
     public void setArrEmployees(ArrayList<Employee> arrEmployees) {
         if (arrEmployees == null) {
             throw new IllegalArgumentException("В методе недопустимый аргумент: setArrEmployees(ArrayList<Employee> arrEmployees==NULL )");
